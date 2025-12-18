@@ -5,32 +5,32 @@
 #include "WrongAnimal.hpp"
 #include "WrongCat.hpp"
 
-int main() {
+int main()
+{
     std::cout << "\n=== Correct Animal Tests ===\n";
-    const Animal* animal = new Animal();
-    const Animal* dog = new Dog();
-    const Animal* cat = new Cat();
+    const Animal *animal = new Animal();
+    const Animal *dog = new Dog();
+    const Animal *cat = new Cat();
 
     std::cout << dog->getType() << std::endl;
     std::cout << cat->getType() << std::endl;
 
-    dog->makeSound();  // Woof
-    cat->makeSound();  // Meow
+    dog->makeSound(); // Woof
+    cat->makeSound(); // Meow
     animal->makeSound();
 
     delete animal;
     delete dog;
     delete cat;
 
-
     std::cout << "\n=== WrongAnimal Tests ===\n";
-    const WrongAnimal* wrong = new WrongAnimal();
-    const WrongAnimal* wrongcat = new WrongCat();
+    const WrongAnimal *wrong = new WrongAnimal();
+    const WrongAnimal *wrongcat = new WrongCat();
 
     std::cout << wrongcat->getType() << std::endl;
 
-    wrong->makeSound();     // WrongAnimal
-    wrongcat->makeSound();  // WRONG: still WrongAnimal sound (because not virtual)
+    wrong->makeSound();    // WrongAnimal
+    wrongcat->makeSound(); // WRONG: still WrongAnimal sound (because not virtual)
 
     delete wrong;
     delete wrongcat;
