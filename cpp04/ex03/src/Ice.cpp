@@ -1,27 +1,28 @@
 #include "Ice.hpp"
+#include <iostream>
+#include "ICharacter.hpp"
 
-#include "../include/AMateria.hpp"
-
-Ice::Ice() : AMateria("ice"), _type("ice")
-{
+Ice::Ice() : AMateria("ice") {
 }
 
-Ice::Ice(AMateria const& other): AMateria(other)
-{
+Ice::Ice(Ice const &other) : AMateria(other) {
     *this = other;
 }
 
-Ice::~Ice()
-{
+Ice &Ice::operator=(Ice const &other) {
+    if (this != &other) {
+        AMateria::operator=(other);
+    }
+    return *this;
 }
 
-AMateria    *Ice::clone() const
-{
-    return new Ice();
+Ice::~Ice() {
 }
 
-void    Ice::use(ICharacter& target)
-{
-    (void)target;
-    std::cout << "* shoots an ice bolt at " << std::endl;
+AMateria *Ice::clone() const {
+    return new Ice(*this);
+}
+
+void Ice::use(ICharacter &target) {
+    std::cout << "* shoots an ice bolt at " << target.getName() << " *" << std::endl;
 }

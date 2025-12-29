@@ -14,7 +14,7 @@ INC_DIR		=	include/
 
 #							FILES	#
 
-SRC_FILES	=	main.cpp AMateria.cpp Ice.cpp
+SRC_FILES	=	main.cpp AMateria.cpp Ice.cpp Cure.cpp Character.cpp
 OBJ_FILES	=	$(SRC_FILES:.cpp=.o)
 
 SRC			=	$(addprefix $(SRC_DIR), $(SRC_FILES))
@@ -29,11 +29,7 @@ CXXFLAGS	=	-Wall -Wextra -Werror -Wshadow -std=c++98 -I $(INC_DIR)
 
 #							RULES	#
 
-all: print_flags $(NAME)
-
-print_flags:
-	@echo "$(BLUE)Compiler: $(CXX)$(RESET)"
-	@echo "$(BLUE)Flags: $(CXXFLAGS)$(RESET)"
+all: $(NAME)
 
 $(NAME): $(OBJ)
 	@$(CXX) $(CXXFLAGS) $(OBJ) -o $(NAME)
