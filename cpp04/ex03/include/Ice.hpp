@@ -8,9 +8,9 @@ class Ice : public AMateria
 public:
     Ice();
 
-    Ice(Ice const& other);
+    Ice(Ice const&);
 
-    Ice& operator=(Ice const& other);
+    Ice& operator=(Ice const&);
 
     ~Ice();
 

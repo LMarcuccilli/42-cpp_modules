@@ -6,7 +6,6 @@ Cure::Cure() : AMateria("cure") {
 }
 
 Cure::Cure(Cure const &other) : AMateria(other) {
-    *this = other;
 }
 
 Cure &Cure::operator=(Cure const &other) {

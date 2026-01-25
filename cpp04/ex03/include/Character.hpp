@@ -10,7 +10,7 @@ private:
     AMateria* _inventory[4];
 
     void copyInventory(const Character& other);
-    void clearInventory() const;
+    void clearInventory();
 
 public:
     Character();

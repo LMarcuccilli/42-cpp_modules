@@ -6,13 +6,11 @@ Ice::Ice() : AMateria("ice") {
 }
 
 Ice::Ice(Ice const &other) : AMateria(other) {
-    *this = other;
 }
 
 Ice &Ice::operator=(Ice const &other) {
-    if (this != &other) {
+    if (this != &other)
         AMateria::operator=(other);
-    }
     return *this;
 }
 

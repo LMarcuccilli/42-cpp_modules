@@ -13,7 +13,6 @@ Character::Character(const std::string &name) : _name(name) {
 }
 
 Character::Character(Character const &other) {
-    clearInventory();
     _name = other._name;
     copyInventory(other);
 }
@@ -44,10 +43,12 @@ void Character::copyInventory(const Character &other) {
     }
 }
 
-void Character::clearInventory() const {
+void Character::clearInventory() {
     for (int i = 0; i < 4; i++) {
-        if (_inventory[i])
+        if (_inventory[i]) {
             delete _inventory[i];
+            _inventory[i] = 0;
+        }
     }
 }
 
@@ -55,20 +56,21 @@ void Character::equip(AMateria *m) {
     if (!m)
         return ;
     for (int i = 0; i < 4; i++) {
-        if (!_inventory[i])
+        if (!_inventory[i]) {
             _inventory[i] = m;
+            return ;
+        }
     }
 }
 
 void Character::unequip(int idx) {
-    if (idx > 3 || idx < 0)
+    if (idx < 0 || idx > 3)
         return ;
-    if (_inventory[idx])
-        delete _inventory[idx];
+    _inventory[idx] = 0;
 }
 
 void Character::use(int idx, ICharacter &target) {
-    if (idx > 3 || idx < 0)
+    if (idx < 0 || idx > 3)
         return ;
     if (_inventory[idx])
         _inventory[idx]->use(target);
