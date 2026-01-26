@@ -13,8 +13,8 @@ SRC_DIR		=	src/
 INC_DIR		=	include/
 
 #							FILES	#
-INC_FILES	=	Bureaucrat.hpp Form.hpp
-SRC_FILES	=	main.cpp Bureaucrat.cpp Form.cpp
+INC_FILES	=	Bureaucrat.hpp AForm.hpp RobotomyRequestForm.hpp ShrubberyCreationForm.hpp
+SRC_FILES	=	main.cpp Bureaucrat.cpp AForm.cpp RobotomyRequestForm.cpp ShrubberyCreationForm.cpp
 OBJ_FILES	=	$(SRC_FILES:.cpp=.o)
 
 INC			=	$(addprefix $(INC_DIR), $(INC_FILES))
@@ -51,4 +51,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re print_flags
+.PHONY: all clean fclean re

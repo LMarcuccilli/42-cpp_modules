@@ -1,7 +1,13 @@
 #include <iostream>
+#include "RobotomyRequestForm.hpp"
+#include "Bureaucrat.hpp"
 
-int main(int argc, char const *argv[])
+int main(void)
 {
-	std::cout << "Hello world !" << std::endl;
+	RobotomyRequestForm form("Didier");
+	Bureaucrat b("Patrick", 100);
+
+	b.signForm(form);
+	b.executeForm(form);
 	return 0;
 }
