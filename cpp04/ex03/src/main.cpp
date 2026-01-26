@@ -6,34 +6,41 @@
 
 #include <iostream>
 
-// int main()
-// {
-//     IMateriaSource* src = new MateriaSource();
-//
-//     src->learnMateria(new Ice());
-//     src->learnMateria(new Cure());
-//
-//     ICharacter* me = new Character("me");
-//
-//     AMateria* tmp;
-//     tmp = src->createMateria("ice");
-//     me->equip(tmp);
-//     tmp = src->createMateria("cure");
-//     me->equip(tmp);
-//
-//     ICharacter* bob = new Character("bob");
-//     me->use(0, *bob);
-//     me->use(1, *bob);
-//
-//     delete bob;
-//     delete me;
-//     delete src;
-// }
+int main()
+{
+    MateriaSource src;
+    Ice *ice = new Ice();
+    Cure *cure = new Cure();
 
-int main() {
-    IMateriaSource* src = new MateriaSource();
-    for (int i = 0; i < 5; i++) {
-        src->learnMateria(new Ice());
-    }
-    delete src;
+    src.learnMateria(ice);
+    src.learnMateria(cure);
+
+    delete ice;
+    delete cure;
+
+    Character me("me");
+
+    AMateria* tmp;
+    tmp = src.createMateria("ice");
+    me.equip(tmp);
+    tmp = src.createMateria("cure");
+    me.equip(tmp);
+
+    Character bob("Bob");
+    me.use(0, bob);
+    me.use(1, bob);
+
+    me.unequip(1);
 }
+
+// int main(void)
+// {
+//     Character c("patrick");
+//     for (int i = 0; i < 100; i++)
+//     {
+//         c.equip(new Cure());
+//         c.unequip(0);
+//     }
+//     Character copy = c;
+//     return 0;
+// }

@@ -1,11 +1,16 @@
-#include "../include/AAnimal.hpp"
+#include "AAnimal.hpp"
 #include "Brain.hpp"
 #include "Dog.hpp"
 #include "Cat.hpp"
 
 int main()
 {
-    std::cout << "Hello World!" << std::endl;
+    //AAnimal p; // impossible
 
+    Dog *dog = new Dog();
+
+    dog->getBrain().setIdea("bones", 0);
+    std::cout << dog->getBrain().getIdea(0) << std::endl;
+    delete dog;
     return 0;
 }

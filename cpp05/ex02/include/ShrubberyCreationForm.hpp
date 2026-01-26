@@ -6,6 +6,7 @@ class ShrubberyCreationForm : public AForm
 {
 private:
 	std::string _target;
+
 public:
 	// constructor
 	ShrubberyCreationForm(const std::string &target);
@@ -14,7 +15,7 @@ public:
 	// operator
 	ShrubberyCreationForm &operator=(ShrubberyCreationForm const &other);
 
-	//destructor
+	// destructor
 	~ShrubberyCreationForm();
 
 	// function

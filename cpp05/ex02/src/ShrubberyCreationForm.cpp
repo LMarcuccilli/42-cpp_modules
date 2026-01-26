@@ -13,6 +13,7 @@ ShrubberyCreationForm::ShrubberyCreationForm(ShrubberyCreationForm const &other)
 {
 }
 
+// Operator
 ShrubberyCreationForm &
 ShrubberyCreationForm::operator=(ShrubberyCreationForm const &other)
 {
@@ -24,6 +25,7 @@ ShrubberyCreationForm::operator=(ShrubberyCreationForm const &other)
 	return *this;
 }
 
+// Destructor
 ShrubberyCreationForm::~ShrubberyCreationForm()
 {
 }

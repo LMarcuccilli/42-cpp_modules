@@ -1,22 +1,29 @@
 #include "MateriaSource.hpp"
+#include <iostream>
 
-MateriaSource::MateriaSource() {
+MateriaSource::MateriaSource()
+{
     for (int i = 0; i < 4; i++)
         _materia[i] = 0;
 }
 
-MateriaSource::MateriaSource(const MateriaSource &other) {
-    for (int i = 0; i < 4; i++) {
+MateriaSource::MateriaSource(const MateriaSource &other)
+{
+    for (int i = 0; i < 4; i++)
+    {
         _materia[i] = 0;
         if (other._materia[i] != 0)
             _materia[i] = other._materia[i]->clone();
     }
 }
 
-MateriaSource& MateriaSource::operator=(const MateriaSource &other) {
-    if (this != &other) {
+MateriaSource &MateriaSource::operator=(const MateriaSource &other)
+{
+    if (this != &other)
+    {
         cleanMateria();
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 4; i++)
+        {
             _materia[i] = 0;
             if (other._materia[i] != 0)
                 _materia[i] = other._materia[i]->clone();
@@ -25,33 +32,41 @@ MateriaSource& MateriaSource::operator=(const MateriaSource &other) {
     return *this;
 }
 
-MateriaSource::~MateriaSource() {
+MateriaSource::~MateriaSource()
+{
     cleanMateria();
 }
 
-void MateriaSource::learnMateria(AMateria *materia) {
+void MateriaSource::learnMateria(AMateria *materia)
+{
     if (!materia)
-        return ;
-    for (int i = 0; i < 4; i++) {
-        if (_materia[i] == 0) {
-            _materia[i] = materia;
-            return ;
+        return;
+    for (int i = 0; i < 4; i++)
+    {
+        if (!_materia[i])
+        {
+            _materia[i] = materia->clone();
+            return;
         }
     }
-    delete materia;
 }
 
-AMateria *MateriaSource::createMateria(std::string const &type) {
-    for (int i = 0; i < 4; i++) {
+AMateria *MateriaSource::createMateria(std::string const &type)
+{
+    for (int i = 0; i < 4; i++)
+    {
         if (_materia[i] && type == _materia[i]->getType())
             return _materia[i]->clone();
     }
     return 0;
 }
 
-void MateriaSource::cleanMateria() {
-    for (int i = 0; i < 4; i++) {
-        if (_materia[i] != 0) {
+void MateriaSource::cleanMateria()
+{
+    for (int i = 0; i < 4; i++)
+    {
+        if (_materia[i] != 0)
+        {
             delete _materia[i];
             _materia[i] = 0;
         }

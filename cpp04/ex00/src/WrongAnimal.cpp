@@ -33,5 +33,5 @@ std::string WrongAnimal::getType() const
 
 void WrongAnimal::makeSound() const
 {
-    std::cout << "WrongAnimal unknown sound..." << std::endl;
+    std::cout << "WrongAnimal not overrided sound..." << std::endl;
 }

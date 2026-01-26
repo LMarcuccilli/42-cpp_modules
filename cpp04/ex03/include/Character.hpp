@@ -3,14 +3,20 @@
 
 #include "ICharacter.hpp"
 
+#define MAX_UNEQUIPPED 100
+
 class Character : public ICharacter
 {
 private:
     std::string _name;
     AMateria* _inventory[4];
+    AMateria* _unequipped[MAX_UNEQUIPPED];
+    int _unequippedCount;
 
     void copyInventory(const Character& other);
     void clearInventory();
+    void copyUnequipped(const Character& other);
+    void clearUnequipped();
 
 public:
     Character();

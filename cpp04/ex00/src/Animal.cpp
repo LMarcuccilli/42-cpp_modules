@@ -5,13 +5,13 @@ Animal::Animal() : _type("unknown")
     std::cout << "Animal constructor" << std::endl;
 }
 
-Animal::Animal(const Animal& other)
+Animal::Animal(const Animal &other)
 {
     std::cout << "Animal copy constructor" << std::endl;
     *this = other;
 }
 
-Animal& Animal::operator=(const Animal& other)
+Animal &Animal::operator=(const Animal &other)
 {
     std::cout << "Animal assignment constructor" << std::endl;
     if (this != &other)
