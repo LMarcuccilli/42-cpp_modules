@@ -52,7 +52,7 @@ Form::~Form()
 {
 }
 
-// Operator
+// Operator =
 Form &Form::operator=(const Form &other)
 {
 	if (this == &other)
@@ -99,4 +99,11 @@ const char *Form::GradeTooHighException::what() const throw()
 const char *Form::GradeTooLowException::what() const throw()
 {
 	return "Form grade too low (must be <= 150)";
+}
+
+// Operator <<
+std::ostream &operator<<(std::ostream &os, const Form &f)
+{
+	os << "(Form) name: " << f.getName() << ", isSigned: " << f.getIsSigned() << ", grade(sign, exec): " << f.getSignGrade() << ", " << f.getExecGrade();
+	return os;
 }
