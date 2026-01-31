@@ -51,4 +51,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re print_flags
+.PHONY: all clean fclean re

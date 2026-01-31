@@ -18,8 +18,6 @@ public:
 	// constructors
 	Bureaucrat();									// default
 	Bureaucrat(const Bureaucrat &other);			// copy
-	Bureaucrat(int grade);							// grade only
-	Bureaucrat(const std::string &name);			// name only
 	Bureaucrat(const std::string &name, int grade); // all parameters
 
 	// destructor
@@ -51,4 +49,4 @@ public:
 };
 
 // ostream
-std::ostream &operator<<(std::ostream &o, Bureaucrat &a);
+std::ostream &operator<<(std::ostream &o, const Bureaucrat &a);

@@ -55,4 +55,4 @@ public:
 };
 
 // ostream
-std::ostream &operator<<(std::ostream &o, Bureaucrat &a);
+std::ostream &operator<<(std::ostream &o, const Bureaucrat &a);

@@ -3,9 +3,6 @@
 
 int main()
 {
-	Bureaucrat a("test", -1); // default
-	std::cout << a << std::endl;
-
 	try
 	{
 		Bureaucrat b("Patrick", 10);
@@ -16,9 +13,6 @@ int main()
 
 		b.decrementGrade();
 		std::cout << "After decrement: " << b << std::endl;
-
-		a = b;
-		std::cout << "a after assignment: " << a << std::endl;
 
 		// Trigger exception
 		Bureaucrat c("TooHigh", 0); // throws GradeTooHighException
