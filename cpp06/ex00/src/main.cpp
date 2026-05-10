@@ -1,5 +1,6 @@
-#include "../include/ScalarConverter.hpp"
+#include "ScalarConverter.hpp"
 #include <string>
+#include <iostream>
 
 int main(int ac, char *av[])
 {
@@ -8,6 +9,7 @@ int main(int ac, char *av[])
 	{
 		std::string arg(av[i]);
 		ScalarConverter::convert(arg);
+		std::cout << "--------------------\n";
 	}
 
 	return 0 ;
