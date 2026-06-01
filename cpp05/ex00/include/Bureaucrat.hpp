@@ -1,12 +1,11 @@
 #pragma once
 
-#include <string>
 #include <exception>
 #include <iostream>
+#include <string>
 
-class Bureaucrat
-{
-private:
+class Bureaucrat {
+  private:
 	// parameters
 	const std::string _name;
 	int _grade;
@@ -14,11 +13,11 @@ private:
 	// setter
 	void setGrade(int grade);
 
-public:
+  public:
 	// constructors
-	Bureaucrat();									// default
-	Bureaucrat(const Bureaucrat &other);			// copy
-	Bureaucrat(const std::string &name, int grade); // all parameters
+	Bureaucrat();
+	Bureaucrat(const Bureaucrat &other);
+	Bureaucrat(const std::string &name, int grade);
 
 	// destructor
 	~Bureaucrat();
@@ -35,15 +34,13 @@ public:
 	void decrementGrade();
 
 	// exceptions
-	class GradeTooHighException : public std::exception
-	{
-	public:
+	class GradeTooHighException : public std::exception {
+	  public:
 		virtual const char *what() const throw();
 	};
 
-	class GradeTooLowException : public std::exception
-	{
-	public:
+	class GradeTooLowException : public std::exception {
+	  public:
 		virtual const char *what() const throw();
 	};
 };
