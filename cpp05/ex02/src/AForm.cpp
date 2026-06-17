@@ -7,7 +7,7 @@ AForm::AForm() : _name("default"), _isSigned(false), _signGrade(150), _execGrade
 }
 
 AForm::AForm(const AForm &other) : _name(other.getName()),
-								   _isSigned(false),
+								   _isSigned(other.getIsSigned()),
 								   _signGrade(other.getSignGrade()),
 								   _execGrade(other.getExecGrade())
 {
@@ -32,8 +32,8 @@ AForm::~AForm()
 // Operator
 AForm &AForm::operator=(const AForm &other)
 {
-	if (this == &other)
-		return *this;
+	if (this != &other)
+		_isSigned = other.getIsSigned();
 	return *this;
 }
 

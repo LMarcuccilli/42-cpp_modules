@@ -31,9 +31,9 @@ AForm *Intern::makeForm(const std::string form, const std::string target)
 	};
 
 	std::string formName[] = {
-		"PresidentialPardonForm",
-		"RobotomyRequestForm",
-		"ShrubberyCreationForm"
+		"presidential pardon",
+		"robotomy request",
+		"shrubbery creation"
 	};
 
 	for (int i = 0; i < 3; i++)

@@ -1,6 +1,9 @@
-#pragma once
+#ifndef FORM_HPP
+#define FORM_HPP
 
 #include <string>
+#include <exception>
+#include <iostream>
 
 class Bureaucrat;
 
@@ -52,3 +55,6 @@ public:
 
 // operator <<
 std::ostream &operator<<(std::ostream &os, const Form &f);
+
+
+#endif

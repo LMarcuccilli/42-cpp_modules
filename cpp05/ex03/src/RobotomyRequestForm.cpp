@@ -36,7 +36,6 @@ void RobotomyRequestForm::doExecute() const
 {
 	std::cout << "DRRRRRRRRRR...";
 
-	srand(time(0));
 	if (rand() % 2 == 0)
 		std::cout << _target << " has been robotomized" << std::endl;
 	else

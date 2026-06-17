@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SHRUBBERY_CREATION_FORM_HPP
+#define SHRUBBERY_CREATION_FORM_HPP
 
 #include "AForm.hpp"
 
@@ -21,3 +22,5 @@ public:
 	// function
 	void doExecute() const;
 };
+
+#endif

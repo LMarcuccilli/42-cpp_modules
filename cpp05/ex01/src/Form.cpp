@@ -16,7 +16,7 @@ Form::Form() : _name("default"), _isSigned(false), _signGrade(150), _execGrade(1
 }
 
 Form::Form(const Form &other) : _name(other.getName()),
-								_isSigned(false),
+								_isSigned(other.getIsSigned()),
 								_signGrade(other.getSignGrade()),
 								_execGrade(other.getExecGrade())
 {
@@ -55,8 +55,8 @@ Form::~Form()
 // Operator =
 Form &Form::operator=(const Form &other)
 {
-	if (this == &other)
-		return *this;
+	if (this != &other)
+		_isSigned = other.getIsSigned();
 	return *this;
 }
 

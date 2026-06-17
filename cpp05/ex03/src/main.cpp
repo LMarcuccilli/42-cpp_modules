@@ -1,65 +1,104 @@
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
+
 #include "Bureaucrat.hpp"
 #include "AForm.hpp"
-#include "ShrubberyCreationForm.hpp"
-#include "RobotomyRequestForm.hpp"
-#include "PresidentialPardonForm.hpp"
+#include "Intern.hpp"
 
 int main()
 {
-	std::cout << "\n========== BAD CONSTRUCTOR TESTS ==========\n\n";
-	try
-	{
-		Bureaucrat badB("BadBureaucrat", 200);
-	}
-	catch (std::exception &e)
-	{
-		std::cout << e.what() << std::endl;
-	}
-
-	std::cout << "\n========== BASIC TESTS ==========\n\n";
+	srand(time(0));
 
 	Bureaucrat boss("Boss", 1);
 	Bureaucrat mid("Mid", 50);
-	Bureaucrat intern("Intern", 150);
+	Bureaucrat low("Low", 150);
 
-	ShrubberyCreationForm shrub("home");
-	RobotomyRequestForm robot("Bender");
-	PresidentialPardonForm pardon("Arthur Dent");
+	Intern someRandomIntern;
 
-	std::cout << boss << std::endl;
-	std::cout << mid << std::endl;
-	std::cout << intern << std::endl;
+	AForm *shrub = NULL;
+	AForm *robot = NULL;
+	AForm *pardon = NULL;
+	AForm *unknown = NULL;
+
+	std::cout << "\n========== FORM CREATION TESTS ==========\n\n";
+
+	shrub = someRandomIntern.makeForm("shrubbery creation", "home");
+	robot = someRandomIntern.makeForm("robotomy request", "Bender");
+	pardon = someRandomIntern.makeForm("presidential pardon", "Arthur Dent");
+	unknown = someRandomIntern.makeForm("unknown form", "Nobody");
+
+	std::cout << "\n========== NULL CHECK ==========\n\n";
+
+	if (!shrub)
+		std::cout << "shrub creation failed" << std::endl;
+	if (!robot)
+		std::cout << "robot creation failed" << std::endl;
+	if (!pardon)
+		std::cout << "pardon creation failed" << std::endl;
+	if (!unknown)
+		std::cout << "unknown form correctly returned NULL" << std::endl;
 
 	std::cout << "\n========== SIGNING TESTS ==========\n\n";
 
-	intern.signForm(shrub);     // should fail
-	mid.signForm(shrub);        // should succeed
+	if (shrub)
+	{
+		low.signForm(*shrub);
+		mid.signForm(*shrub);
+	}
 
-	intern.signForm(robot);     // should fail
-	mid.signForm(robot);        // should succeed
+	if (robot)
+	{
+		low.signForm(*robot);
+		mid.signForm(*robot);
+	}
 
-	intern.signForm(pardon);    // should fail
-	boss.signForm(pardon);      // should succeed
+	if (pardon)
+	{
+		mid.signForm(*pardon);
+		boss.signForm(*pardon);
+	}
 
 	std::cout << "\n========== EXECUTION TESTS ==========\n\n";
 
-	intern.executeForm(shrub);  // should fail (grade too low)
-	mid.executeForm(shrub);     // should succeed
+	if (shrub)
+	{
+		low.executeForm(*shrub);
+		mid.executeForm(*shrub);
+	}
 
-	intern.executeForm(robot); // should fail
-	mid.executeForm(robot);    // should fail (exec grade too low)
-	boss.executeForm(robot);   // should succeed (50% chance)
+	if (robot)
+	{
+		mid.executeForm(*robot);
+		boss.executeForm(*robot);
+		boss.executeForm(*robot);
+		boss.executeForm(*robot);
+	}
 
-	intern.executeForm(pardon);// should fail
-	mid.executeForm(pardon);   // should fail
-	boss.executeForm(pardon);  // should succeed
+	if (pardon)
+	{
+		mid.executeForm(*pardon);
+		boss.executeForm(*pardon);
+	}
 
 	std::cout << "\n========== UNSIGNED FORM TEST ==========\n\n";
 
-	ShrubberyCreationForm unsignedForm("garden");
-	boss.executeForm(unsignedForm); // should throw: not signed
+	AForm *unsignedRobot = someRandomIntern.makeForm("robotomy request", "UnsignedBot");
+
+	if (unsignedRobot)
+		boss.executeForm(*unsignedRobot);
+
+	std::cout << "\n========== CLEANUP ==========\n\n";
+
+	delete shrub;
+	delete robot;
+	delete pardon;
+	delete unknown;
+	delete unsignedRobot;
+
+	std::cout << "All allocated forms deleted." << std::endl;
 
 	std::cout << "\n========== DONE ==========\n";
+
 	return 0;
 }

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef ROBOTOMY_REQUEST_FORM_HPP
+#define ROBOTOMY_REQUEST_FORM_HPP
 
 #include <string>
 #include "AForm.hpp"
@@ -22,3 +23,5 @@ public:
 	// function
 	void doExecute() const;
 };
+
+#endif

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef PRESIDENTIAL_PARDON_FORM_HPP
+#define PRESIDENTIAL_PARDON_FORM_HPP
 
 #include "AForm.hpp"
 
@@ -21,3 +22,5 @@ public:
 	// function
 	void doExecute() const;
 };
+
+#endif

@@ -13,8 +13,8 @@ SRC_DIR		=	src/
 INC_DIR		=	include/
 
 #							FILES	#
-INC_FILES	=	Bureaucrat.hpp AForm.hpp RobotomyRequestForm.hpp ShrubberyCreationForm.hpp PresidentialPardonForm.hpp
-SRC_FILES	=	main.cpp Bureaucrat.cpp AForm.cpp RobotomyRequestForm.cpp ShrubberyCreationForm.cpp PresidentialPardonForm.cpp
+INC_FILES	=	Bureaucrat.hpp Intern.hpp AForm.hpp RobotomyRequestForm.hpp ShrubberyCreationForm.hpp PresidentialPardonForm.hpp
+SRC_FILES	=	main.cpp Intern.cpp Bureaucrat.cpp AForm.cpp RobotomyRequestForm.cpp ShrubberyCreationForm.cpp PresidentialPardonForm.cpp
 OBJ_FILES	=	$(SRC_FILES:.cpp=.o)
 
 INC			=	$(addprefix $(INC_DIR), $(INC_FILES))

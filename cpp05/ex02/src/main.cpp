@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstdlib>
 #include "Bureaucrat.hpp"
 #include "AForm.hpp"
 #include "ShrubberyCreationForm.hpp"
@@ -7,6 +8,8 @@
 
 int main()
 {
+	srand(time(0));
+
 	std::cout << "\n========== BAD CONSTRUCTOR TESTS ==========\n\n";
 	try
 	{
