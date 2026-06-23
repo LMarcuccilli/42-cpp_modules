@@ -1,6 +1,6 @@
 #include <iostream>
 #include "Serializer.hpp"
-#include "Data.h"
+#include "Data.hpp"
 
 int main() {
 	Data data;
@@ -16,9 +16,10 @@ int main() {
 	std::cout << "Deserialized ptr: " << ptr << std::endl;
 
 	if (ptr == &data)
-		std::cout << "✅ Success: pointers match!" << std::endl;
+		std::cout << "success: pointers match" << std::endl;
 	else
-		std::cout << "❌ Failure!" << std::endl;
+		std::cout << "failure" << std::endl;
 
+	std::cout << ptr->id << ", " << ptr->name << std::endl;
 	return 0;
 }

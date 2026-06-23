@@ -13,15 +13,15 @@ SRC_DIR		=	src/
 INC_DIR		=	include/
 
 #							FILES	#
-INC_FILES	=	Data.hpp Serializer.hpp
-SRC_FILES	=	main.cpp Serializer.cpp
+INC_FILES	=	easyfind.hpp
+SRC_FILES	=	main.cpp
 OBJ_FILES	=	$(SRC_FILES:.cpp=.o)
 
 INC			=	$(addprefix $(INC_DIR), $(INC_FILES))
 SRC			=	$(addprefix $(SRC_DIR), $(SRC_FILES))
 OBJ			=	$(addprefix $(OBJ_DIR), $(OBJ_FILES))
 
-NAME		=	serializer
+NAME		=	easyfind
 
 #							COMPILER	#
 

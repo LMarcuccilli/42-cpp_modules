@@ -1,82 +1,43 @@
+
+#include "Array.hpp"
 #include <iostream>
 #include <string>
-#include "Array.hpp"
 
-int main(void)
-{
-	std::cout << "===== INT ARRAY =====" << std::endl;
+int main() {
+  Array<int> a(3);
 
-	Array<int> numbers(5);
+  for (unsigned int i = 0; i < a.size(); i++)
+    a[i] = i + 1;
 
-	for (unsigned int i = 0; i < numbers.size(); i++)
-		numbers[i] = i * 10;
+  std::cout << "Array a: ";
+  for (unsigned int i = 0; i < a.size(); i++)
+    std::cout << a[i] << " ";
+  std::cout << std::endl;
 
-	for (unsigned int i = 0; i < numbers.size(); i++)
-		std::cout << "numbers[" << i << "] = " << numbers[i] << std::endl;
+  Array<int> b(a);
+  b[0] = 42;
 
-	std::cout << std::endl;
+  std::cout << "a[0] = " << a[0] << std::endl;
+  std::cout << "b[0] = " << b[0] << std::endl;
 
+  Array<int> c;
+  c = a;
+  c[1] = 99;
 
-	std::cout << "===== COPY CONSTRUCTOR =====" << std::endl;
+  std::cout << "a[1] = " << a[1] << std::endl;
+  std::cout << "c[1] = " << c[1] << std::endl;
 
-	Array<int> copy(numbers);
+  Array<std::string> words(2);
+  words[0] = "hello";
+  words[1] = "world";
 
-	copy[0] = 999;
+  std::cout << words[0] << " " << words[1] << std::endl;
 
-	std::cout << "Original array:" << std::endl;
-	for (unsigned int i = 0; i < numbers.size(); i++)
-		std::cout << numbers[i] << " ";
-	std::cout << std::endl;
+  try {
+    std::cout << a[10] << std::endl;
+  } catch (const std::exception &e) {
+    std::cout << "Exception caught" << std::endl;
+  }
 
-	std::cout << "Copied array:" << std::endl;
-	for (unsigned int i = 0; i < copy.size(); i++)
-		std::cout << copy[i] << " ";
-	std::cout << std::endl << std::endl;
-
-
-	std::cout << "===== ASSIGNMENT OPERATOR =====" << std::endl;
-
-	Array<int> assigned;
-
-	assigned = numbers;
-
-	assigned[1] = 555;
-
-	std::cout << "Original array:" << std::endl;
-	for (unsigned int i = 0; i < numbers.size(); i++)
-		std::cout << numbers[i] << " ";
-	std::cout << std::endl;
-
-	std::cout << "Assigned array:" << std::endl;
-	for (unsigned int i = 0; i < assigned.size(); i++)
-		std::cout << assigned[i] << " ";
-	std::cout << std::endl << std::endl;
-
-
-	std::cout << "===== STRING ARRAY =====" << std::endl;
-
-	Array<std::string> words(3);
-
-	words[0] = "hello";
-	words[1] = "template";
-	words[2] = "world";
-
-	for (unsigned int i = 0; i < words.size(); i++)
-		std::cout << words[i] << std::endl;
-
-	std::cout << std::endl;
-
-
-	std::cout << "===== OUT OF BOUNDS =====" << std::endl;
-
-	try
-	{
-		std::cout << numbers[42] << std::endl;
-	}
-	catch (const std::exception &e)
-	{
-		std::cout << "Exception caught: index out of bounds" << std::endl;
-	}
-
-	return 0;
+  return 0;
 }

@@ -2,8 +2,7 @@
 #include <string>
 #include <iostream>
 
-int main(int ac, char *av[])
-{
+int main(int ac, char *av[]) {
 	(void)ac;
 	for (int i = 1; av[i]; i++)
 	{
@@ -14,4 +13,3 @@ int main(int ac, char *av[])
 
 	return 0 ;
 }
-
