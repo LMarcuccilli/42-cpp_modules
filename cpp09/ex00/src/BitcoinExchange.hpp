@@ -10,7 +10,9 @@ class BitcoinExchange {
 
   private:
 	bool parse(std::ifstream &input);
-	std::map<int[3], float> _table;
+	std::map<unsigned[3], float> _table;
+
+	
 };
 
 #endif

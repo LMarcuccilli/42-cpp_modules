@@ -13,15 +13,15 @@ SRC_DIR		=	src/
 INC_DIR		=	include/
 
 #							FILES	#
-INC_FILES	=	MutantStack.hpp
-SRC_FILES	=	main.cpp
+INC_FILES	=	Span.hpp
+SRC_FILES	=	main.cpp Span.cpp
 OBJ_FILES	=	$(SRC_FILES:.cpp=.o)
 
 INC			=	$(addprefix $(INC_DIR), $(INC_FILES))
 SRC			=	$(addprefix $(SRC_DIR), $(SRC_FILES))
 OBJ			=	$(addprefix $(OBJ_DIR), $(OBJ_FILES))
 
-NAME		=	mutant
+NAME		=	span
 
 #							COMPILER	#
 
