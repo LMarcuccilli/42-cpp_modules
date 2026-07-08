@@ -1,6 +1,6 @@
 #include "BitcoinExchange.hpp"
-#include <iostream>
 #include <fstream>
+#include <iostream>
 
 int main(int ac, char *av[]) {
 	if (ac != 2) {
@@ -13,8 +13,12 @@ int main(int ac, char *av[]) {
 		std::cerr << "Failed to open" << av[1] << std::endl;
 		return 1;
 	}
+	try {
+		BitcoinExchange btc(file);
+	}
+	catch (const std::exception &e) {
+		std::cerr << e.what();
+	}
 
-	BitcoinExchange btc(file);
-
-	return 0;
+return 0;
 }

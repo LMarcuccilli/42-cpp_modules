@@ -1,8 +1,14 @@
 #ifndef BITCOIN_EXCHANGE_HPP
 #define BITCOIN_EXCHANGE_HPP
 
-#include <map>
 #include <fstream>
+#include <map>
+
+struct Date {
+	unsigned year;
+	unsigned day;
+	unsigned month;
+};
 
 class BitcoinExchange {
   public:
@@ -10,9 +16,7 @@ class BitcoinExchange {
 
   private:
 	bool parse(std::ifstream &input);
-	std::map<unsigned[3], float> _table;
-
-	
+	std::map<Date, float> _table;
 };
 
 #endif
