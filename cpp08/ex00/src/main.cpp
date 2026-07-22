@@ -1,23 +1,37 @@
 #include "../include/easyfind.hpp"
 #include <cstdlib>
+#include <deque>
+#include <exception>
 #include <iostream>
 #include <vector>
 
-int main(int argc, char const *argv[]) {
-	if (argc < 2) {
-		std::cout << "Usage: ./program numbers..." << std::endl;
-		return 1;
-	}
-	std::vector<int> arr;
-	for (int i = 1; i < argc; i++) {
-		arr.push_back(std::atoi(argv[i]));
-	}
+int main(void) {
+	std::vector<int> arrV;
+	arrV.push_back(1);
+	arrV.push_back(2);
+	arrV.push_back(3);
 
 	try {
-		std::cout << ::easyfind(arr, std::atoi(argv[1])) << std::endl;
-		std::cout << ::easyfind(arr, 42) << std::endl;
-	} catch (...) {
-		std::cout << "exception caught" << std::endl;
+		std::cout << ::easyfind(arrV, 1) << std::endl;
+		std::cout << ::easyfind(arrV, 3) << std::endl;
+		std::cout << ::easyfind(arrV, 42) << std::endl;
+
+	} catch (const std::exception &e) {
+		std::cerr << e.what() << std::endl;
+	}
+
+	std::deque<int> arrD;
+	arrD.push_back(1);
+	arrD.push_back(2);
+	arrD.push_back(3);
+
+	try {
+		std::cout << ::easyfind(arrD, 1) << std::endl;
+		std::cout << ::easyfind(arrD, 3) << std::endl;
+		std::cout << ::easyfind(arrD, 42) << std::endl;
+
+	} catch (const std::exception &e) {
+		std::cerr << e.what() << std::endl;
 	}
 
 	return 0;

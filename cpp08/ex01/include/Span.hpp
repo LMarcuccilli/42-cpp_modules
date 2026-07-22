@@ -1,8 +1,8 @@
 #ifndef SPAN_HPP
 #define SPAN_HPP
 
-#include <bits/stdc++.h>
 #include <exception>
+#include <iterator>
 
 class Span {
   public:
