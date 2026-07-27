@@ -1,5 +1,4 @@
 #include "../include/easyfind.hpp"
-#include <cstdlib>
 #include <deque>
 #include <exception>
 #include <iostream>
