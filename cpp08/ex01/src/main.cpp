@@ -26,6 +26,7 @@ int main() {
 		}
 
 		Span bigSpan(SIZE);
+
 		bigSpan.addNumbers(values, values + SIZE);
 
 		std::cout << bigSpan.shortestSpan() << std::endl;

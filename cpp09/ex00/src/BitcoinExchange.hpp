@@ -8,8 +8,9 @@
 #include <string>
 
 #define EXCEP_FIRSTLINE "expected \"date | value\" as first line"
-#define EXCEP_SEP "missing \'|\' character"
+#define EXCEP_FORMAT "invalid format, expected \"YYYY-MM-DD | value\""
 #define EXCEP_DATE "invalid date format, expected YYYY-MM-DD"
+#define EXCEP_VALUE "invalid value"
 
 struct Date {
 	unsigned year;
@@ -17,14 +18,17 @@ struct Date {
 	unsigned month;
 };
 
+std::ostream &operator<<(std::ostream &os, const Date &date);
+
 class BitcoinExchange {
   public:
 	BitcoinExchange(std::ifstream &input);
 
   private:
-	std::map<Date, float> _table;
+	std::map<Date, double> _table;
 	bool parse(std::ifstream &input);
-	Date parseDate(std::string &str, unsigned lineNb);
+	void parseLine(std::string &str, unsigned lineNb);
+	void printTable() const;
 
 	// Exception
 	class ParsingException : public std::runtime_error {

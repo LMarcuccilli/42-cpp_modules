@@ -1,11 +1,13 @@
 #include "BitcoinExchange.hpp"
+#include <cctype>
+#include <cstdlib>
+#include <cwctype>
 #include <exception>
 #include <fstream>
+#include <iomanip>
 #include <iostream>
-#include <sstream>
 #include <string>
-
-std::ostream &operator<<(std::ostream &os, const Date &date);
+#include <utility>
 
 BitcoinExchange::BitcoinExchange(std::ifstream &input) {
 	unsigned lineNb = 1;
@@ -24,33 +26,75 @@ BitcoinExchange::BitcoinExchange(std::ifstream &input) {
 		try {
 			std::size_t sep = line.find('|');
 			if (sep == std::string::npos)
-				throw ParsingException(EXCEP_SEP, lineNb);
+				throw ParsingException(EXCEP_FORMAT, lineNb);
 			std::string dateStr = line.substr(0, sep);
 			std::string valueStr = line.substr(sep + 1);
 
-			Date date = parseDate(dateStr, lineNb);
-			std::cout << date << std::endl;
+			parseLine(dateStr, lineNb);
 		} catch (const std::exception &e) {
 			std::cerr << e.what() << std::endl;
 		}
 		lineNb++;
 	}
+	printTable();
 }
 
-Date BitcoinExchange::parseDate(std::string &str, unsigned lineNb) {
+void BitcoinExchange::parseLine(std::string &str, unsigned lineNb) {
 	Date date;
-	std::istringstream iss(str);
-	char c1, c2;
 
-	if (!(iss >> date.year >> c1 >> date.month >> c2 >> date.day))
-		throw ParsingException(EXCEP_DATE, lineNb);
+	unsigned i = 0;
+	for (unsigned y = 0; y < 4; y++) {
+		if (!std::isdigit(str[i]))
+			throw ParsingException(EXCEP_FORMAT, lineNb);
+		i++;
+	}
+	if (str[i++] != '-')
+		throw ParsingException(EXCEP_FORMAT, lineNb);
+	for (unsigned y = 0; y < 2; y++) {
+		if (!std::isdigit(str[i]))
+			throw ParsingException(EXCEP_FORMAT, lineNb);
+		i++;
+	}
+	if (str[i++] != '-')
+		throw ParsingException(EXCEP_FORMAT, lineNb);
+	for (unsigned y = 0; y < 2; y++) {
+		if (!std::isdigit(str[i]))
+			throw ParsingException(EXCEP_FORMAT, lineNb);
+		i++;
+	}
+	if (str[i++] != ' ' && str[i++] != '|' && str[i++] != ' ' && i < str.size())
+		throw ParsingException(EXCEP_FORMAT, lineNb);
+	bool dot = false;
+	while (i < str.size()) {
+		if (str[i] == '.') {
+			if (dot || ++i == str.size())
+				throw ParsingException(EXCEP_VALUE, lineNb);
+			dot = true;
+		}
+		if (!std::isdigit(str[i]))
+			throw ParsingException(EXCEP_VALUE, lineNb);
+		i++;
+	}
 
-	if (c1 != '-' || c2 != '-')
-		throw ParsingException(EXCEP_DATE, lineNb);
+	date.year = std::atoi(str.substr(0, 4).c_str());
+	date.month = std::atoi(str.substr(5, 2).c_str());
+	date.day = std::atoi(str.substr(8, 2).c_str());
+	char *end;
+	double value = std::strtod(str.substr(12).c_str(), &end);
+	_table.insert((std::make_pair(date, value)));
+}
 
-	return date;
+void BitcoinExchange::printTable() const {
+	std::map<Date, double>::const_iterator it;
+
+	for (it = _table.begin(); it != _table.end(); ++it) {
+		std::cout << it->first << " | " << it->second << std::endl;
+	}
 }
 
 std::ostream &operator<<(std::ostream &os, const Date &date) {
-	return os << date.year << '-' << date.day << '-' << date.month;
+	std::cout << std::setw(4) << std::setfill('0') << date.year;
+	std::cout << "-" << std::setw(2) << std::setfill('0') << date.month;
+	std::cout << "-" << std::setw(2) << std::setfill('0') << date.day;
+	return os;
 }
