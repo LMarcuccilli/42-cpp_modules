@@ -8,9 +8,10 @@
 #include <string>
 
 #define EXCEP_FIRSTLINE "expected \"date | value\" as first line"
-#define EXCEP_FORMAT "invalid format, expected \"YYYY-MM-DD | value\""
+#define EXCEP_INPUT "bad input"
 #define EXCEP_DATE "invalid date format, expected YYYY-MM-DD"
-#define EXCEP_VALUE "invalid value"
+#define EXCEP_VALUE_HIGH "too large a number"
+#define EXCEP_VALUE_NEG "not a positive number"
 
 struct Date {
 	unsigned year;
@@ -19,6 +20,7 @@ struct Date {
 };
 
 std::ostream &operator<<(std::ostream &os, const Date &date);
+bool operator<(const Date& lhs, const Date& rhs);
 
 class BitcoinExchange {
   public:
@@ -27,19 +29,26 @@ class BitcoinExchange {
   private:
 	std::map<Date, double> _table;
 	bool parse(std::ifstream &input);
-	void parseLine(std::string &str, unsigned lineNb);
+	void parseLine(const std::string &line);
 	void printTable() const;
 
 	// Exception
 	class ParsingException : public std::runtime_error {
 	  public:
-		ParsingException(const std::string &msg, unsigned line)
-			: std::runtime_error(makeMessage(msg, line)) {}
+		ParsingException(const std::string &msg)
+			: std::runtime_error(makeMessage(msg)) {}
+		ParsingException(const std::string &msg, std::string input)
+			: std::runtime_error(makeMessage(msg, input)) {}
 
 	  private:
-		static std::string makeMessage(const std::string &msg, unsigned line) {
+		static std::string makeMessage(const std::string &msg) {
 			std::ostringstream oss;
-			oss << "line " << line << ": " << msg;
+			oss << "Error: " << msg;
+			return oss.str();
+		}
+		static std::string makeMessage(const std::string &msg, std::string input) {
+			std::ostringstream oss;
+			oss << "Error: " << msg << " => " << "\"" << input << "\"";
 			return oss.str();
 		}
 	};

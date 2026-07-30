@@ -1,7 +1,6 @@
 #include "BitcoinExchange.hpp"
 #include <cctype>
 #include <cstdlib>
-#include <cwctype>
 #include <exception>
 #include <fstream>
 #include <iomanip>
@@ -10,78 +9,60 @@
 #include <utility>
 
 BitcoinExchange::BitcoinExchange(std::ifstream &input) {
-	unsigned lineNb = 1;
 	std::string firstLine;
 	std::getline(input, firstLine);
 	try {
 		if (firstLine != "date | value")
-			throw ParsingException(EXCEP_FIRSTLINE, lineNb);
+			throw ParsingException(EXCEP_FIRSTLINE);
 	} catch (const std::exception &e) {
 		std::cerr << e.what() << std::endl;
 		return;
 	}
 
-	lineNb++;
 	for (std::string line; std::getline(input, line);) {
 		try {
-			std::size_t sep = line.find('|');
-			if (sep == std::string::npos)
-				throw ParsingException(EXCEP_FORMAT, lineNb);
-			std::string dateStr = line.substr(0, sep);
-			std::string valueStr = line.substr(sep + 1);
-
-			parseLine(dateStr, lineNb);
+			parseLine(line);
 		} catch (const std::exception &e) {
 			std::cerr << e.what() << std::endl;
 		}
-		lineNb++;
 	}
-	printTable();
 }
 
-void BitcoinExchange::parseLine(std::string &str, unsigned lineNb) {
-	Date date;
+void BitcoinExchange::parseLine(const std::string &line) {
+	if (line.size() < 14 || line[4] != '-' || line[7] != '-' ||
+		line[10] != ' ' || line[11] != '|' || line[12] != ' ')
+		throw ParsingException(EXCEP_INPUT, line);
 
-	unsigned i = 0;
-	for (unsigned y = 0; y < 4; y++) {
-		if (!std::isdigit(str[i]))
-			throw ParsingException(EXCEP_FORMAT, lineNb);
-		i++;
+	// YYYY
+	for (unsigned i = 0; i < 4; i++) {
+		if (!std::isdigit(line[i]))
+			throw ParsingException(EXCEP_INPUT, line);
 	}
-	if (str[i++] != '-')
-		throw ParsingException(EXCEP_FORMAT, lineNb);
-	for (unsigned y = 0; y < 2; y++) {
-		if (!std::isdigit(str[i]))
-			throw ParsingException(EXCEP_FORMAT, lineNb);
-		i++;
+	// MM
+	for (unsigned i = 5; i < 7; i++) {
+		if (!std::isdigit(line[i]))
+			throw ParsingException(EXCEP_INPUT, line);
 	}
-	if (str[i++] != '-')
-		throw ParsingException(EXCEP_FORMAT, lineNb);
-	for (unsigned y = 0; y < 2; y++) {
-		if (!std::isdigit(str[i]))
-			throw ParsingException(EXCEP_FORMAT, lineNb);
-		i++;
-	}
-	if (str[i++] != ' ' && str[i++] != '|' && str[i++] != ' ' && i < str.size())
-		throw ParsingException(EXCEP_FORMAT, lineNb);
-	bool dot = false;
-	while (i < str.size()) {
-		if (str[i] == '.') {
-			if (dot || ++i == str.size())
-				throw ParsingException(EXCEP_VALUE, lineNb);
-			dot = true;
-		}
-		if (!std::isdigit(str[i]))
-			throw ParsingException(EXCEP_VALUE, lineNb);
-		i++;
+	// DD
+	for (unsigned i = 8; i < 10; i++) {
+		if (!std::isdigit(line[i]))
+			throw ParsingException(EXCEP_INPUT, line);
 	}
 
-	date.year = std::atoi(str.substr(0, 4).c_str());
-	date.month = std::atoi(str.substr(5, 2).c_str());
-	date.day = std::atoi(str.substr(8, 2).c_str());
+	// VALUE
 	char *end;
-	double value = std::strtod(str.substr(12).c_str(), &end);
-	_table.insert((std::make_pair(date, value)));
+	const std::string valueString = line.substr(13);
+	const char *lineValue = valueString.c_str(); 
+	double value = std::strtod(line.substr(13).c_str(), &end);
+	if (end == lineValue)
+		throw ParsingException(EXCEP_INPUT, line);
+
+	if (value < 0)
+		throw ParsingException(EXCEP_VALUE_NEG);
+	if (value > 1000)
+		throw ParsingException(EXCEP_VALUE_HIGH);
+
+	std::cout << line << std::endl;
 }
 
 void BitcoinExchange::printTable() const {
@@ -92,9 +73,17 @@ void BitcoinExchange::printTable() const {
 	}
 }
 
+bool operator<(const Date &lhs, const Date &rhs) {
+	if (lhs.year != rhs.year)
+		return lhs.year < rhs.year;
+	if (lhs.month != rhs.month)
+		return lhs.month < rhs.month;
+	return lhs.day < rhs.day;
+}
+
 std::ostream &operator<<(std::ostream &os, const Date &date) {
-	std::cout << std::setw(4) << std::setfill('0') << date.year;
-	std::cout << "-" << std::setw(2) << std::setfill('0') << date.month;
-	std::cout << "-" << std::setw(2) << std::setfill('0') << date.day;
+	os << std::setw(4) << std::setfill('0') << date.year;
+	os << "-" << std::setw(2) << std::setfill('0') << date.month;
+	os << "-" << std::setw(2) << std::setfill('0') << date.day;
 	return os;
 }
