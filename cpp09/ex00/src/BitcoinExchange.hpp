@@ -7,37 +7,52 @@
 #include <stdexcept>
 #include <string>
 
+// PATH
+#define DATA_PATH "data.csv"
+
+// EXCEPTION
+#define EXCEP_OPEN "couldn't access"
+#define EXCEP_DATA "corrupted data.csv"
 #define EXCEP_FIRSTLINE "expected \"date | value\" as first line"
 #define EXCEP_INPUT "bad input"
 #define EXCEP_DATE "invalid date format, expected YYYY-MM-DD"
 #define EXCEP_VALUE_HIGH "too large a number"
 #define EXCEP_VALUE_NEG "not a positive number"
 
+// DATE
 struct Date {
-	unsigned year;
-	unsigned day;
-	unsigned month;
+	int year;
+	int month;
+	int day;
+};
+std::ostream &operator<<(std::ostream &os, const Date &date);
+bool operator<(const Date &lhs, const Date &rhs);
+
+struct InputEntry {
+	Date date;
+	double value;
 };
 
-std::ostream &operator<<(std::ostream &os, const Date &date);
-bool operator<(const Date& lhs, const Date& rhs);
-
+// CLASS
 class BitcoinExchange {
   public:
-	BitcoinExchange(std::ifstream &input);
+	BitcoinExchange(char *input);
 
   private:
 	std::map<Date, double> _table;
+	void storeData(std::ifstream &input);
+	void solveInput(std::ifstream &input);
 	bool parse(std::ifstream &input);
-	void parseLine(const std::string &line);
+	InputEntry parseLine(const std::string &line);
+	std::map<Date, double>::iterator &findLowerData(Date &d);
 	void printTable() const;
 
 	// Exception
-	class ParsingException : public std::runtime_error {
+	class BitcoinExchangeException : public std::runtime_error {
 	  public:
-		ParsingException(const std::string &msg)
+		BitcoinExchangeException(const std::string &msg)
 			: std::runtime_error(makeMessage(msg)) {}
-		ParsingException(const std::string &msg, std::string input)
+		BitcoinExchangeException(const std::string &msg, std::string input)
 			: std::runtime_error(makeMessage(msg, input)) {}
 
 	  private:
@@ -46,9 +61,11 @@ class BitcoinExchange {
 			oss << "Error: " << msg;
 			return oss.str();
 		}
-		static std::string makeMessage(const std::string &msg, std::string input) {
+		static std::string makeMessage(const std::string &msg,
+									   std::string input) {
 			std::ostringstream oss;
-			oss << "Error: " << msg << " => " << "\"" << input << "\"";
+			oss << "Error: " << msg << " => "
+				<< "\"" << input << "\"";
 			return oss.str();
 		}
 	};

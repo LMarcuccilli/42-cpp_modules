@@ -8,13 +8,8 @@ int main(int ac, char *av[]) {
 		return 1;
 	}
 
-	std::ifstream file(av[1]);
-	if (!file) {
-		std::cerr << "Failed to open" << av[1] << std::endl;
-		return 1;
-	}
 	try {
-		BitcoinExchange btc(file);
+		BitcoinExchange btc(av[1]);
 	}
 	catch (const std::exception &e) {
 		std::cerr << e.what();
