@@ -15,9 +15,10 @@
 #define EXCEP_DATA "corrupted data.csv"
 #define EXCEP_FIRSTLINE "expected \"date | value\" as first line"
 #define EXCEP_INPUT "bad input"
-#define EXCEP_DATE "invalid date format, expected YYYY-MM-DD"
+#define EXCEP_DATE "invalid date"
 #define EXCEP_VALUE_HIGH "too large a number"
 #define EXCEP_VALUE_NEG "not a positive number"
+#define EXCEP_NO_DATA "no exchange rate available for this date"
 
 // DATE
 struct Date {
@@ -27,10 +28,12 @@ struct Date {
 };
 std::ostream &operator<<(std::ostream &os, const Date &date);
 bool operator<(const Date &lhs, const Date &rhs);
+bool operator!=(const Date &lhs, const Date &rhs);
 
 struct InputEntry {
 	Date date;
 	double value;
+	InputEntry(Date d, double v) : date(d), value(v) {}
 };
 
 // CLASS
@@ -44,7 +47,8 @@ class BitcoinExchange {
 	void solveInput(std::ifstream &input);
 	bool parse(std::ifstream &input);
 	InputEntry parseLine(const std::string &line);
-	std::map<Date, double>::iterator &findLowerData(Date &d);
+	void checkInputEntry(const InputEntry &entry) const;
+	double &findLowerData(Date &d);
 	void printTable() const;
 
 	// Exception

@@ -4,6 +4,7 @@
 #include <exception>
 #include <fstream>
 #include <iomanip>
+#include <ios>
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -31,7 +32,8 @@ void BitcoinExchange::storeData(std::ifstream &input) {
 		double value;
 		std::istringstream iss(line);
 
-		if (!(iss >> date.year >> c1 >> date.month >> c2 >> date.day >> c3 >> value))
+		if (!(iss >> date.year >> c1 >> date.month >> c2 >> date.day >> c3 >>
+			  value))
 			throw BitcoinExchangeException(EXCEP_DATA);
 		if (c1 != '-' || c2 != '-' || c3 != ',')
 			throw BitcoinExchangeException(EXCEP_DATA);
@@ -53,10 +55,13 @@ void BitcoinExchange::solveInput(std::ifstream &input) {
 	for (std::string line; std::getline(input, line);) {
 		try {
 			InputEntry entry = parseLine(line);
+			checkInputEntry(entry);
 
-			std::map<Date, double>::iterator it = _table.lower_bound(entry.date);
+			double rate = findLowerData(entry.date);
 
-			std::cout << entry.date << " => " << it->second << " = " << entry.value * it->second << std::endl;
+			std::cout << entry.date << " => " << rate << " = "
+					  << std::setprecision(10)
+					  << entry.value * rate << std::endl;
 
 		} catch (const std::exception &e) {
 			std::cerr << e.what() << std::endl;
@@ -98,19 +103,41 @@ InputEntry BitcoinExchange::parseLine(const std::string &line) {
 	if (end == lineValue || (!std::isdigit(*end) && *end != '\0'))
 		throw BitcoinExchangeException(EXCEP_INPUT, line);
 
-	if (value < 0)
-		throw BitcoinExchangeException(EXCEP_VALUE_NEG);
-	if (value > 1000)
-		throw BitcoinExchangeException(EXCEP_VALUE_HIGH);
-
-	InputEntry result;
-	result.date = date;
-	result.value = value;
-	return result;
+	return InputEntry(date, value);
 }
 
-std::map<Date, double>::iterator &bitcoinExchange::findLowerData(Date &d) {
+void BitcoinExchange::checkInputEntry(const InputEntry &input) const {
+	Date d = input.date;
 
+	if (d.month < 1 || d.month > 12)
+		throw BitcoinExchangeException(EXCEP_DATE);
+
+	int monthLength[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+	if (d.year % 4 == 0 && (d.year % 100 != 0 || d.year % 400 == 0))
+		monthLength[1] = 29;
+
+	if (d.day < 1 || d.day > monthLength[d.month - 1])
+		throw BitcoinExchangeException(EXCEP_DATE);
+
+	if (input.value < 0)
+		throw BitcoinExchangeException(EXCEP_VALUE_NEG);
+	if (input.value > 1000)
+		throw BitcoinExchangeException(EXCEP_VALUE_HIGH);
+}
+
+double &BitcoinExchange::findLowerData(Date &d) {
+	std::map<Date, double>::iterator it = _table.lower_bound(d);
+
+	if (it == _table.end()) {
+		--it;
+	} else if (it->first != d) {
+		if (it == _table.begin()) {
+			throw BitcoinExchangeException(EXCEP_NO_DATA);
+		}
+		--it;
+	}
+
+	return it->second;
 }
 
 void BitcoinExchange::printTable() const {
@@ -134,4 +161,10 @@ std::ostream &operator<<(std::ostream &os, const Date &date) {
 	os << "-" << std::setw(2) << std::setfill('0') << date.month;
 	os << "-" << std::setw(2) << std::setfill('0') << date.day;
 	return os;
+}
+
+bool operator!=(const Date &lhs, const Date &rhs) {
+	if (lhs.year == rhs.year && lhs.month == rhs.month && lhs.day == rhs.day)
+		return false;
+	return true;
 }
