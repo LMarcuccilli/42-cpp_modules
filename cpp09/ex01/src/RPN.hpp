@@ -2,23 +2,18 @@
 #define RPN_HPP
 
 #include <stack>
-#include <stdexcept>
-
-enum e_type {
-	num,
-	op,
-	other
-};
+#include <string>
 
 class Rpn {
   private:
 	std::stack<int> _stack;
 
-	int getType(const char c);
 	void operate(const char op);
-	class RpnException : public std::runtime_error {
+	class RpnException : public std::exception {
 	  public:
-		RpnException(const std::string msg) : std::runtime_error(msg) {}
+		const char *what() const throw() {
+			return "Error";
+		}
 	};
 
   public:

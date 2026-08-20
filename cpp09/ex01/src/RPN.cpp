@@ -1,33 +1,54 @@
 #include "RPN.hpp"
 #include <cctype>
-#include <exception>
-
-int Rpn::getType(const char c) {
-	if (std::isdigit(c))
-		return e_type::num;
-	if (c == '+' || c == '-' || c == '/' || c == '*')
-		return e_type::op;
-	return e_type::other;
-}
+#include <iostream>
 
 void Rpn::operate(const char op) {
 	if (_stack.size() <= 1)
-		throw std::exception();
+		throw RpnException();
 
+	int a = _stack.top();
+	_stack.pop();
+	int b = _stack.top();
+	_stack.pop();
 	if (op == '+') {
-		
+		// std::cout << a << op << b << " = " << b + a << std::endl;
+		_stack.push(b + a);
+	}
+	if (op == '-') {
+		// std::cout << a << op << b << " = " << b - a << std::endl;
+		_stack.push(b - a);
+	}
+	if (op == '/') {
+		if (!a || !b)
+			throw RpnException();
+		// std::cout << a << op << b << " = " << b / a << std::endl;
+		_stack.push(b / a);
+	}
+	if (op == '*') {
+		// std::cout << a << op << b << " = " << b * a << std::endl;
+		_stack.push(b * a);
 	}
 }
 
 void Rpn::process(const std::string arg) {
-	for (int i = 0; i < arg.size(); i++) {
-		switch (getType(arg[i])) {
-			case e_type::num :
-				_stack.push(arg[i] - '0');
-				break;
-			case e_type::op :
+	for (unsigned i = 0; i < arg.size(); i++) {
+		if (std::isdigit(arg[i])) {
+			if (i + 1 < arg.size() && std::isdigit(arg[i + 1]))
+				throw RpnException();
 
-				break;
+			_stack.push(arg[i] - '0');
+		} else if (arg[i] == '+' || arg[i] == '-' || arg[i] == '*' ||
+				   arg[i] == '/') {
+			if (i + 1 < arg.size() && arg[i + 1] != ' ')
+				throw RpnException();
+			operate(arg[i]);
+		} else if (arg[i] != ' ') {
+			throw RpnException();
 		}
 	}
+
+	if (_stack.size() != 1)
+		throw RpnException();
+
+	std::cout << _stack.top() << std::endl;
 }

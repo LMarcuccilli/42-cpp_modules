@@ -1,3 +1,4 @@
+#include "RPN.hpp"
 #include <iostream>
 
 int main(int ac, char *av[]) {
@@ -6,6 +7,13 @@ int main(int ac, char *av[]) {
 		return 1;
 	}
 
-	std::cout << av[1] << std::endl;
+	try {
+		Rpn rpn;
+		rpn.process(av[1]);
+	}
+	catch (const std::exception& e) {
+		std::cerr << e.what() << std::endl;
+	}
+
 	return 0;
 }

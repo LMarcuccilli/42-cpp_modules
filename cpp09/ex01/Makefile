@@ -13,8 +13,8 @@ SRC_DIR		=	src/
 INC_DIR		=	include/
 
 #							FILES	#
-INC_FILES	=
-SRC_FILES	=	main.cpp
+INC_FILES	=	RPN.hpp
+SRC_FILES	=	main.cpp RPN.cpp
 OBJ_FILES	=	$(SRC_FILES:.cpp=.o)
 
 INC			=	$(addprefix $(SRC_DIR), $(INC_FILES))
